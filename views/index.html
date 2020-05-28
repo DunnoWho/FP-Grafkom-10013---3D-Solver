@@ -1,0 +1,174 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="wizard" class="wizard">
+            <div class="wizard__content">
+                <header class="wizard__header">
+                    <div class="wizard__header-overlay"><canvas id="canvas"></canvas></div>
+
+                    <div class="wizard__header-content">
+                    </div>
+
+                    <div class="wizard__steps">
+                        <nav class="steps">
+                            <div class="step">
+                                <div class="step__content">
+                                    <p class="step__number"><i class="fa fa-github-alt"></i></p>
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                    </svg>
+
+                                    <div class="lines">
+                                        <div class="line -start">
+                                        </div>
+
+                                        <div class="line -background">
+                                        </div>
+
+                                        <div class="line -progress">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step">
+                                <div class="step__content">
+                                    <p class="step__number"><i class="fa fa-book"></i></p>
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                    </svg>
+
+                                    <div class="lines">
+                                        <div class="line -background">
+                                        </div>
+
+                                        <div class="line -progress">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step">
+                                <div class="step__content">
+                                    <p class="step__number"><i class="fa fa-group"></i></p>
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                    </svg>
+
+                                    <div class="lines">
+                                        <div class="line -background">
+                                        </div>
+
+                                        <div class="line -progress">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step">
+                                <div class="step__content">
+                                    <p class="step__number"><i class="fa fa-group"></i></p>
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                    </svg>
+
+                                    <div class="lines">
+                                        <div class="line -background">
+                                        </div>
+
+                                        <div class="line -progress">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </header>
+
+
+                <div class="panels">
+                    <div class="panel">
+                        <header class="panel__header">
+                            <h2 class="panel__title">Selamat datang di program 3D solver!</h2>
+                            <p class="panel__subheading">Ikuti tekan tombol lanjut untuk memulai</p>
+                        </header>
+                    </div>
+
+                    <div class="panel">
+                        <header class="panel__header">
+                            <h2 class="panel__title">Learn more about pure Javascript.</h2>
+                            <p class="panel__subheading">We have cool frameworks, but none is better then VanillaJS</p>
+                        </header>
+
+                        <p class="panel__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod
+                            tempor incididunt ut labore et dolore magna culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                        <p class="panel__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod
+                            tempor incididunt ut labore et dolore magna culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+
+                    <div class="panel">
+                        <header class="panel__header">
+                            <h2 class="panel__title">Stay in touch with the community.</h2>
+                            <p class="panel__subheading">Community is everything, and here we do some crazy stuff.</p>
+                        </header>
+
+                        <p class="panel__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod
+                            tempor incididunt ut labore et dolore magna culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+
+                    <div class="panel">
+                        <header class="panel__header">
+                            <h2 class="panel__title">Stay in touch with the community.</h2>
+                            <p class="panel__subheading">Community is everything, and here we do some crazy stuff.</p>
+                        </header>
+
+                        <p class="panel__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                            eiusmod
+                            tempor incididunt ut labore et dolore magna culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+                </div>
+
+                <div class="wizard__footer">
+                    <button class="button previous">Kembali</button>
+                    <button class="button next">Lanjut</button>
+                </div>
+            </div>
+
+            <h1 class="wizard__congrats-message">
+                Congratulations, you are now in a world of pain and suffering!
+            </h1>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/helper/SceneManager.js"></script>
+    <script src="js/helper/MyGeom.js"></script>
+    <script src="js/helper/MyPoint.js"></script>
+    <script src="js/helper/MyLine.js"></script>
+    <script src="js/helper/MyPlane.js"></script>
+    <script src="js/helper/MySolid.js"></script>
+    <script src="js/helper/MyBox.js"></script>
+    <script src="js/3d.js"></script>
+</body>
+
+</html>
