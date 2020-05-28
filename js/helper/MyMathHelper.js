@@ -7,6 +7,7 @@ class SqrtHelper {
             this.a = a;
             this.b = b;
         }
+        // console.log(this.a, this.b);
         this.simplify();
     }
 
@@ -28,6 +29,7 @@ class SqrtHelper {
                 this.b /= (i * i);
             }
         }
+        // console.log(this.a, this.b);
         this.a *= temp;
         return this;
     }
@@ -162,10 +164,10 @@ SqrtFracHelper.prototype.toString = function () {
         return `\\frac{${a}}{${b}}`;
     }
 }
-//TAMBAHI SCALE AJA BIAR GA LUPA
-function myDist(a, b) {
+
+function myDist(a, b, scaleL, scaleW, scaleH) {
     let x = a.x - b.x,
         y = a.y - b.y,
         z = a.z - b.z;
-    return new SqrtFracHelper(new SqrtHelper(myRound((x * x + y * y + z * z) * 129600)), new SqrtHelper(129600));
+    return new SqrtFracHelper(new SqrtHelper(myRound((x * x * scaleL * scaleL + y * y * scaleH * scaleH + z * z * scaleW * scaleW) * 129600)), new SqrtHelper(129600));
 }

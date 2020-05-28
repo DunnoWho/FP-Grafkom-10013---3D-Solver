@@ -155,33 +155,9 @@
         ]);
 
         const triangleLines = [
-            myDist({
-                x: t.x * scaleL,
-                y: t.y * scaleH,
-                z: t.z * scaleW
-            }, {
-                x: g[0].x * scaleL,
-                y: g[0].y * scaleH,
-                z: g[0].z * scaleW
-            }),
-            myDist({
-                x: t.x * scaleL,
-                y: t.y * scaleH,
-                z: t.z * scaleW
-            }, {
-                x: g[1].x * scaleL,
-                y: g[1].y * scaleH,
-                z: g[1].z * scaleW
-            }),
-            myDist({
-                x: g[0].x * scaleL,
-                y: g[0].y * scaleH,
-                z: g[0].z * scaleW
-            }, {
-                x: g[1].x * scaleL,
-                y: g[1].y * scaleH,
-                z: g[1].z * scaleW
-            })
+            myDist(t, g[0], scaleL, scaleW, scaleH),
+            myDist(t, g[1], scaleL, scaleW, scaleH),
+            myDist(g[0], g[1], scaleL, scaleW, scaleH)
         ];
 
         const paragraphs = [
@@ -259,9 +235,8 @@
             const paragraphs = [
                 `Karena \\( ${in1}${in2[0]} = ${in1}${in2[1]} \\), maka titik ${in1}' berada di tengah-tengah garis ${in2[0]}${in2[1]}, sehingga \\( ${in1}'${in2[0]} = ${temp[0]}\\)`,
                 `Gunakan teorema Pythagoras untuk menghitung panjang ${in1}${in1}' dengan ${in1}'${in2[0]} sebagai alas, ${in1}${in1}' sebagai garis tinggi, dan ${in1}${in2[0]} sebagai sisi miring`,
-                `\\(${in1}${in1}' = \\sqrt{(${triangleLines[0]}^2-(${temp[0]})^2)}\\)`,
-                `\\(${in1}${in1}' = \\sqrt{(${temp[1]}-${temp[2]})}\\)`,
-                `\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)`,
+                `\\(${in1}${in1}' = \\sqrt{(${triangleLines[0]})^2-(${temp[0]})^2}\\)`,
+                `\\(${in1}${in1}' = \\sqrt{${temp[1]}-${temp[2]}}\\)`,
             ]
             if (`\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)` != `\\(${in1}${in1}' = ${temp[3]}\\)`) {
                 paragraphs.push(`\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)`);
@@ -275,31 +250,108 @@
                 paragraphs
             ), sceneManager);
         } else if (type == 4) {
-            // let temp = [new SqrtFracHelper(triangleLines[2].a, new SqrtHelper(2 * 2).mul(triangleLines[2].b))];
-            // temp.push(triangleLines[0].squared());
-            // temp.push(temp[0].squared());
-            // temp.push(new SqrtFracHelper(
-            //     new SqrtHelper(temp[1].a * temp[2].b - temp[2].a * temp[1].b),
-            //     new SqrtHelper(temp[1].b * temp[2].b)
-            // ));
-            // const paragraphs = [
-            //     `Karena \\( ${in1}${in2[0]} = ${in1}${in2[1]} \\), maka titik ${in1}' berada di tengah-tengah garis ${in2[0]}${in2[1]}, sehingga \\( ${in1}'${in2[0]} = ${temp[0]}\\)`,
-            //     `Gunakan teorema Pythagoras untuk menghitung panjang ${in1}${in1}' dengan ${in1}'${in2[0]} sebagai alas, ${in1}${in1}' sebagai garis tinggi, dan ${in1}${in2[0]} sebagai sisi miring`,
-            //     `\\(${in1}${in1}' = \\sqrt{(${triangleLines[0]}^2-(${temp[0]})^2)}\\)`,
-            //     `\\(${in1}${in1}' = \\sqrt{(${temp[1]}-${temp[2]})}\\)`,
-            //     `\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)`,
-            // ]
-            // if (`\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)` != `\\(${in1}${in1}' = ${temp[3]}\\)`) {
-            //     paragraphs.push(`\\(${in1}${in1}' = \\sqrt{${temp[3].squared()}}\\)`);
-            // }
-            // paragraphs.push(`\\(${in1}${in1}' = ${temp[3]} cm\\)`);
-            // addSolutionStep(content, makePageContent(
-            //     "panel_content",
-            //     "fa-pencil-square-o",
-            //     `Cara Pengerjaan`,
-            //     "Kasus lain",
-            //     paragraphs
-            // ), sceneManager);
+            let paragraphs = [
+                `Segitiga ${in1}${in2[0]}${in2[1]} dapat dibagi menjadi 2 buah segitiga siku-siku, yaitu segitiga ${in1}${in1}'${in2[0]} dan ${in1}${in1}'${in2[1]}. Perhatikan bahwa:`,
+                `\\(${in1}${in1}' = \\sqrt{${in1}${in2[0]}^2 - ${in1}'${in2[0]}^2}\\)`,
+                `\\(${in1}${in1}' = \\sqrt{${in1}${in2[1]}^2 - ${in1}'${in2[1]}^2}\\)`,
+                `\\( \\therefore \\sqrt{${in1}${in2[0]}^2 - ${in1}'${in2[0]}^2} = \\sqrt{${in1}${in2[1]}^2 - ${in1}'${in2[1]}^2}\\)`,
+                `\\( ${in1}${in2[0]}^2 - ${in1}'${in2[0]}^2 = ${in1}${in2[1]}^2 - ${in1}'${in2[1]}^2 \\)`
+            ]
+            addSolutionStep(content, makePageContent(
+                "panel_content",
+                "fa-pencil-square-o",
+                `Cara Pengerjaan`,
+                "Kasus lain",
+                paragraphs
+            ), sceneManager);
+
+            let temp = {
+                "a": `${in1}${in2[1]}`,
+                "b": `${in1}${in2[0]}`,
+                "c": `${in2[0]}${in2[1]}`,
+                "x": `${in1}'${in2[1]}`
+            };
+
+            paragraphs = [
+                `\\( ${in1}${in2[0]}^2 - ${in1}'${in2[0]}^2 = ${in1}${in2[1]}^2 - ${in1}'${in2[1]}^2 \\)`,
+                `\\( ${temp["b"]}^2 - (${temp["c"]} - ${temp["x"]})^2 = ${temp["a"]}^2 - ${temp["x"]}^2 \\)`,
+                `\\( ${temp["b"]}^2 - (${temp["c"]}^2 - 2(${temp["c"]})(${temp["x"]}) + ${temp["x"]}^2) = ${temp["a"]}^2 - ${temp["x"]}^2 \\)`,
+                `\\( ${temp["b"]}^2 - ${temp["c"]}^2 + 2(${temp["c"]})(${temp["x"]}) - ${temp["x"]}^2 = ${temp["a"]}^2 - ${temp["x"]}^2 \\)`,
+                `\\( ${temp["b"]}^2 - ${temp["c"]}^2 + 2(${temp["c"]})(${temp["x"]}) = ${temp["a"]}^2 \\)`,
+                `\\( 2(${temp["c"]})(${temp["x"]}) = ${temp["a"]}^2 - ${temp["b"]}^2 + ${temp["c"]}^2 \\)`,
+                `\\( ${temp["x"]} = \\frac{${temp["a"]}^2 - ${temp["b"]}^2 + ${temp["c"]}^2}{2${temp["c"]}}\\)`,
+            ]
+            addSolutionStep(content, makePageContent(
+                "panel_content",
+                "fa-pencil-square-o",
+                `Cara Pengerjaan`,
+                "Kasus lain",
+                paragraphs
+            ), sceneManager);
+
+            temp = [triangleLines[1].squared(), triangleLines[0].squared(), triangleLines[2].squared()]
+            temp.push(
+                new FracHelper(
+                    temp[0].a * temp[1].b * temp[2].b - temp[0].b * temp[1].a * temp[2].b + temp[0].b * temp[1].b * temp[2].a,
+                    temp[0].b * temp[1].b * temp[2].b
+                )
+            );
+            temp.push(
+                new SqrtFracHelper(
+                    new SqrtHelper(
+                        temp[3].a * triangleLines[2].b.a, triangleLines[2].b.b
+                    ),
+                    new SqrtHelper(
+                        temp[3].b * triangleLines[2].a.a * 2, triangleLines[2].a.b
+                    )
+                )
+            );
+            paragraphs = [
+                `\\( ${in1}'${in2[1]} = \\frac{(${triangleLines[1]})^2 - (${triangleLines[0]})^2 + (${triangleLines[2]})^2}{2(${triangleLines[2]})}\\)`,
+                `\\( ${in1}'${in2[1]} = \\frac{${triangleLines[1].squared()} - ${triangleLines[0].squared()} + ${triangleLines[2].squared()}}{2(${triangleLines[2]})}\\)`,
+                `\\( ${in1}'${in2[1]} = \\frac{${temp[3]}}{2(${triangleLines[2]})}\\)`,
+                `\\( ${in1}'${in2[1]} = ${temp[4]}\\)`,
+            ]
+            addSolutionStep(content, makePageContent(
+                "panel_content",
+                "fa-pencil-square-o",
+                `Cara Pengerjaan`,
+                "Kasus lain",
+                paragraphs
+            ), sceneManager);
+
+            temp.push(
+                triangleLines[1].squared(),
+                temp[4].squared()
+            );
+            temp.push(
+                new FracHelper(
+                    temp[5].a * temp[6].b - temp[5].b * temp[6].a,
+                    temp[5].b * temp[6].b
+                )
+            );
+            temp.push(
+                new SqrtFracHelper(
+                    new SqrtHelper(temp[7].a),
+                    new SqrtHelper(temp[7].b)
+                )
+            )
+            paragraphs = [
+                `\\(${in1}${in1}' = \\sqrt{${in1}${in2[1]}^2 - ${in1}'${in2[1]}^2}\\)`,
+                `\\(${in1}${in1}' = \\sqrt{(${triangleLines[1]})^2 - (${temp[4]})^2}\\)`,
+                `\\(${in1}${in1}' = \\sqrt{${triangleLines[1].squared()} - ${temp[4].squared()}}\\)`,
+            ]
+            if(`\\(${in1}${in1}' = \\sqrt{${temp[7]}}\\)` != `\\(${in1}${in1}' = ${temp[8]}\\)`){
+                paragraphs.push(`\\(${in1}${in1}' = \\sqrt{${temp[7]}}\\)`);
+            }
+            paragraphs.push(`\\(${in1}${in1}' = ${temp[8]} cm\\)`);
+            addSolutionStep(content, makePageContent(
+                "panel_content",
+                "fa-pencil-square-o",
+                `Cara Pengerjaan`,
+                "Kasus lain",
+                paragraphs
+            ), sceneManager);
         }
     }
 
