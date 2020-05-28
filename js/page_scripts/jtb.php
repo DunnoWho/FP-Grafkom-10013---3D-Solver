@@ -9,11 +9,6 @@
         in1 = "<?= $data["in1"] ?>",
         in2 = "<?= $data["in2"] ?>",
         shape = <?= $data["shape"] ?>;
-        let points = null, lines = null, shapes = null;
-    [points, lines, shapes] = generateElements(shape, l, w, h);
-    if(!validCheck(in1, 1, points) || !validCheck(in2, 2, lines)){
-        window.location.replace("error.php?code=0");
-    }
     const in1pt = strToPoints(in1, shape, drawL, drawW, drawH)[0],
         in2pt = strToPoints(in2, shape, drawL, drawW, drawH),
         scaleL = l / drawL,

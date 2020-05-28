@@ -44,11 +44,9 @@
                         <option value="0">Jarak 2 titik</option>
                         <option value="1">Jarak titik ke garis</option>
                         <option value="2">Jarak titik ke bidang</option>
-                        <option value="3">Proyeksi titik ke bidang</option>
-                        <option value="4">Proyeksi garis ke bidang</option>
-                        <option value="5">Sudut antara garis dan garis</option>
-                        <option value="6">Sudut antara garis dan bidang</option>
-                        <option value="7">Sudut antara bidang dan bidang</option>
+                        <option value="3">Sudut antara garis dan garis</option>
+                        <option value="4">Sudut antara garis dan bidang</option>
+                        <option value="5">Sudut antara bidang dan bidang</option>
                     </select>
                 </td>
             </tr>
@@ -119,18 +117,12 @@
                     $("#hide1").show();
                     $("#hide5").show();
                 } else if (temp == 3) {
-                    $("#hide1").show();
-                    $("#hide5").show();
+                    $("#hide3").show();
+                    $("#hide4").show();
                 } else if (temp == 4) {
                     $("#hide3").show();
                     $("#hide5").show();
                 } else if (temp == 5) {
-                    $("#hide3").show();
-                    $("#hide4").show();
-                } else if (temp == 6) {
-                    $("#hide3").show();
-                    $("#hide5").show();
-                } else if (temp == 7) {
                     $("#hide5").show();
                     $("#hide6").show();
                 }
@@ -141,36 +133,28 @@
                 const input = {};
                 if (val == 0) {
                     action = "/jtt.php";
-                    input["in1"] = titik1.val();
-                    input["in2"] = titik2.val();
+                    input["in1"] = titik1.val().toUpperCase();
+                    input["in2"] = titik2.val().toUpperCase();
                 } else if (val == 1) {
                     action = "/jtg.php";
-                    input["in1"] = titik1.val();
-                    input["in2"] = garis1.val();
+                    input["in1"] = titik1.val().toUpperCase();
+                    input["in2"] = garis1.val().toUpperCase();
                 } else if (val == 2) {
                     action = "/jtb.php";
-                    input["in1"] = titik1.val();
-                    input["in2"] = bidang1.val();
+                    input["in1"] = titik1.val().toUpperCase();
+                    input["in2"] = bidang1.val().toUpperCase();
                 } else if (val == 3) {
-                    action = "/ptb.php";
-                    input["in1"] = titik1.val();
-                    input["in2"] = bidang1.val();
-                } else if (val == 4) {
-                    action = "/pgb.php";
-                    input["in1"] = garis1.val();
-                    input["in2"] = bidang1.val();
-                } else if (val == 5) {
                     action = "/sgg.php";
-                    input["in1"] = garis1.val();
-                    input["in2"] = garis2.val();
-                } else if (val == 6) {
+                    input["in1"] = garis1.val().toUpperCase();
+                    input["in2"] = garis2.val().toUpperCase();
+                } else if (val == 4) {
                     action = "/sgb.php";
-                    input["in1"] = garis1.val();
-                    input["in2"] = bidang1.val();
-                } else if (val == 7) {
+                    input["in1"] = garis1.val().toUpperCase();
+                    input["in2"] = bidang1.val().toUpperCase();
+                } else if (val == 5) {
                     action = "/sbb.php";
-                    input["in1"] = bidang1.val();
-                    input["in2"] = bidang2.val();
+                    input["in1"] = bidang1.val().toUpperCase();
+                    input["in2"] = bidang2.val().toUpperCase();
                 }
                 const form = $('<form />', {
                     action: action,

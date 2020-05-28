@@ -1163,6 +1163,154 @@ function strToPoints(str, shape, l, w, h) {
     return ret;
 }
 
+function generateElements(shape, l, w, h) {
+    const points = [],
+        lines = [],
+        planes = [];
+    let bp = null,
+        shapePoints = null;
+    if (shape == 0) {
+        bp = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
+        shapePoints = boxPoints;
+    } else if (shape == 1) {
+        bp = "abcdefghijklmt".toUpperCase().split("");
+        shapePoints = pyramidPoints;
+    } else {
+        return false;
+    }
+
+    const bl = [];
+    bp.forEach(e => {
+        points.push({
+            vec: new THREE.Vector3(shapePoints[e]["point"].x(l), shapePoints[e]["point"].y(h), shapePoints[e]["point"].z(w)),
+            name: e
+        });
+    });
+    for (let i = 0; i < points.length; i++) {
+        const e = points[i];
+        for (let j = i + 1; j < points.length; j++) {
+            const ee = points[j];
+            bl.push(e["name"] + ee["name"]);
+            lines.push({
+                name: e["name"] + ee["name"],
+                points: [e["vec"], ee["vec"]],
+                vec: new THREE.Vector3().subVectors(e["vec"], ee["vec"])
+            });
+        }
+    }
+    let bpl = null,
+        discard = null;
+    if (shape == 0) {
+        bpl = [
+            "abcd", "mnop", "efgh",
+            "adhe", "iksq", "bcgf",
+            "adgf", "bche", "abgh", "cdef",
+            "adon", "adsq", "bcpm", "bcsq",
+            "fgpm", "fgki", "ehon", "ehki",
+            "abop", "abrt", "cdmn", "cdtr",
+            "ghmn", "ghlj", "efop", "efjl",
+            "iltq", "jksr", "ijrq", "klts",
+            "ilsr", "jktq", "ijst", "klqr",
+            "jlmn", "optr", "jlpo", "mnrt",
+            "jntp", "lorm", "jotm", "lnrp"
+        ];
+        discard = ["abi", "bcj", "cdk", "adl",
+            "mnv", "now", "opx", "pmy",
+            "efq", "fgr", "ghs", "eht",
+            "aem", "eht", "dhp", "adl",
+            "iqv", "qsz", "ksx", "iku",
+            "bfn", "fgr", "cgo", "bcj"
+        ];
+    } else if (shape == 1) {
+        bpl = [
+            "abcd", "ijkl",
+            "bcli", "egli", "adkj", "egkj",
+            "cdij", "fhij", "abkl", "fhlk",
+            "efki", "ghik", "ehlj", "fglj",
+        ];
+        discard = [
+            "abe", "bcf", "cdg", "adh",
+            "ait", "bjt", "ckt", "dlt"
+        ];
+    }
+
+    discard.forEach(e => {
+        if (bpl.indexOf(e.toUpperCase()) >= 0) {
+            bpl.splice(bpl.indexOf(e.toUpperCase()), 1);
+        }
+    });
+
+    for (let i = 0; i < bpl.length; i++) {
+        const e = bpl[i];
+        const pts = strToPoints(e.toUpperCase(), shape, l, w, h);
+        planes.push({
+            name: e,
+            plane: new THREE.Plane(pts[0]["point"], pts[1]["point"], pts[2]["point"])
+        })
+    }
+    return [points, lines, planes];
+}
+
+function validCheck(input, n, col) {
+    if (n == 1) {
+        if (input.length != 1) {
+            return false;
+        }
+        for (let i = 0; i < col.length; i++) {
+            if (col[i]["name"] == input) {
+                return true;
+            }
+        }
+    } else if (n == 2) {
+        if (input.length != 2) {
+            return false;
+        }
+        for (let i = 0; i < col.length; i++) {
+            if (col[i]["name"] == input || col[i]["name"] == input[1] + input[0]) {
+                return true;
+            }
+        }
+    } else if (n == 3) {
+        if (input.length == 3) {
+            for (let i = 0; i < col.length; i++) {
+                if (col[i]["name"].length == input.length && [
+                        input[0] + input[1] + input[2],
+                        input[0] + input[2] + input[1],
+                        input[1] + input[0] + input[2],
+                        input[1] + input[2] + input[0],
+                        input[2] + input[0] + input[1],
+                        input[2] + input[1] + input[0]
+                    ].indexOf(col[i]["name"]) >= 0) {
+                    return true;
+                }
+            }
+        } else if (input.length == 4) {
+            for (let i = 0; i < col.length; i++) {
+                if (col[i]["name"].length == input.length && [
+                        input[0] + input[1] + input[2] + input[3],
+                        input[1] + input[2] + input[3] + input[0],
+                        input[2] + input[3] + input[0] + input[1],
+                        input[3] + input[0] + input[1] + input[2]
+                    ].indexOf(col[i]["name"]) >= 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
 function myRound(x) {
     return Math.round((x + Number.EPSILON) * 100) / 100;
 }
+
+// const pyramidSpecialPlanes = [
+//     "abcd", "ijkl",
+//     "abt", "bct", "cdt", "adt",
+//     "act", "bdt", "fht", "egt",
+//     "eht", "fgt", "eft", "ght",
+//     "bcli", "egli", "adkj", "egkj",
+//     "cdij", "fhij", "abkl", "fhlk",
+//     "efki", "ghik", "ehlj", "fglj",
+//     "efj", "fgk", "ghl", "ehi",
+// ];
