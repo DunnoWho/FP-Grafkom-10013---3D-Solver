@@ -9,9 +9,11 @@
         in1 = "<?= $data["in1"] ?>",
         in2 = "<?= $data["in2"] ?>",
         shape = <?= $data["shape"] ?>;
-        let points = null, lines = null, shapes = null;
-    [points, lines, shapes] = generateElements(shape, l, w, h);
-    if(!validCheck(in1, 1, points) || !validCheck(in2, 2, lines)){
+    let points = null,
+        lines = null,
+        planes = null;
+    [points, lines, planes] = generateElements(shape, l, w, h);
+    if (!validCheck(in1, 1, points) || !validCheck(in2, 2, lines)) {
         window.location.replace("error.php?code=0");
     }
     const in1pt = strToPoints(in1, shape, drawL, drawW, drawH)[0],
@@ -346,7 +348,7 @@
                 `\\(${in1}${in1}' = \\sqrt{(${triangleLines[1]})^2 - (${temp[4]})^2}\\)`,
                 `\\(${in1}${in1}' = \\sqrt{${triangleLines[1].squared()} - ${temp[4].squared()}}\\)`,
             ]
-            if(`\\(${in1}${in1}' = \\sqrt{${temp[7]}}\\)` != `\\(${in1}${in1}' = ${temp[8]}\\)`){
+            if (`\\(${in1}${in1}' = \\sqrt{${temp[7]}}\\)` != `\\(${in1}${in1}' = ${temp[8]}\\)`) {
                 paragraphs.push(`\\(${in1}${in1}' = \\sqrt{${temp[7]}}\\)`);
             }
             paragraphs.push(`\\(${in1}${in1}' = ${temp[8]} cm\\)`);

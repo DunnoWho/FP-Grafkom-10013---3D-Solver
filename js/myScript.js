@@ -1202,9 +1202,9 @@ function generateElements(shape, l, w, h) {
         discard = null;
     if (shape == 0) {
         bpl = [
-            "abcd", "mnop", "efgh",
-            "adhe", "iksq", "bcgf",
+            "abcd", "efgh", "adhe", "bcgf",
             "adgf", "bche", "abgh", "cdef",
+            "acge", "bdhf",
             "adon", "adsq", "bcpm", "bcsq",
             "fgpm", "fgki", "ehon", "ehki",
             "abop", "abrt", "cdmn", "cdtr",
@@ -1212,7 +1212,8 @@ function generateElements(shape, l, w, h) {
             "iltq", "jksr", "ijrq", "klts",
             "ilsr", "jktq", "ijst", "klqr",
             "jlmn", "optr", "jlpo", "mnrt",
-            "jntp", "lorm", "jotm", "lnrp"
+            "jntp", "lorm", "jotm", "lnrp",
+            "iksq", "mnop",
         ];
         discard = ["abi", "bcj", "cdk", "adl",
             "mnv", "now", "opx", "pmy",
@@ -1234,18 +1235,34 @@ function generateElements(shape, l, w, h) {
         ];
     }
 
-    discard.forEach(e => {
-        if (bpl.indexOf(e.toUpperCase()) >= 0) {
-            bpl.splice(bpl.indexOf(e.toUpperCase()), 1);
+    bpl.sort();
+    for (let i = 0; i < bpl.length; i++) {
+        bpl[i] = bpl[i].toUpperCase();
+    }
+    for (let i = 0; i < discard.length; i++) {
+        discard[i] = discard[i].toUpperCase();
+    }
+
+    for (let i = 0; i < bp.length; i++) {
+        const e = bp[i];
+        for (let i = 0; i < bl.length; i++) {
+            const ee = bl[i];
+            if (e < ee[0] && discard.indexOf(e + ee) < 0) {
+                bpl.push(e + ee);
+            }
         }
-    });
+    }
 
     for (let i = 0; i < bpl.length; i++) {
         const e = bpl[i];
-        const pts = strToPoints(e.toUpperCase(), shape, l, w, h);
+        const pts = strToPoints(e, shape, l, w, h);
         planes.push({
             name: e,
-            plane: new THREE.Plane(pts[0]["point"], pts[1]["point"], pts[2]["point"])
+            plane: new THREE.Plane().setFromCoplanarPoints(
+                new THREE.Vector3(pts[0]["point"].x, pts[0]["point"].y, pts[0]["point"].z),
+                new THREE.Vector3(pts[1]["point"].x, pts[1]["point"].y, pts[1]["point"].z),
+                new THREE.Vector3(pts[2]["point"].x, pts[2]["point"].y, pts[2]["point"].z)
+            ).normalize()
         })
     }
     return [points, lines, planes];
@@ -1298,6 +1315,10 @@ function validCheck(input, n, col) {
         }
         return false;
     }
+}
+
+function lineInPlane(line, plane) {
+
 }
 
 function myRound(x) {
