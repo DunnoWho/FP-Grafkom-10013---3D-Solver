@@ -118,7 +118,7 @@
         `Cara Pengerjaan`,
         "",
         [
-            `Sudut antara garis ${in1} ke bidang ${in2} sama dengan <a target="_blank" href='/sgg.php?in1=${in1}&in2=${solLine["name"]}&shape=${shape}&l=${l}&w=${w}&h=${h}'>sudut antara garis ${in1} ke garis ${solLine["name"]}</a>. Klik link untuk melihat cara menghitung jarak tersebut.`
+            `Sudut antara garis ${in1} ke bidang ${in2} sama dengan <a target="_blank" href='/sgg.php?in1=${in1}&in2=${solLine["name"]}&shape=${shape}&l=${l}&w=${w}&h=${h}'>sudut antara garis ${in1} dan garis ${solLine["name"]}</a>. Klik link untuk melihat cara menghitung sudut tersebut.`
         ]
     ), sceneManager);
 
