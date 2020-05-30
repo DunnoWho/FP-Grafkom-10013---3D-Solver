@@ -74,15 +74,20 @@ class FracHelper {
         // console.log(this.b);
         while (Math.floor(this.a) != this.a || Math.floor(this.b) != this.b) {
             ctr++;
+            // console.log(this.a, this.b);
             this.a *= 30;
             this.b *= 30;
-            console.log("b");
+            if (ctr > 10) {
+                alert("Something went wrong :(");
+                throw new Error("Something went wrong :(");
+            }
+            // console.log("b");
         }
         // console.log("====");
         // console.log(this.a);
         // console.log(this.b);
         // console.log("====");
-        let g = gcd(this.a, this.b);
+        let g = gcd(Math.abs(this.a), Math.abs(this.b));
         // while (ctr > 0) {
         //     ctr--;
         //     this.a /= 30;
@@ -144,9 +149,9 @@ class SqrtFracHelper {
         // console.log(this.b);
         const a = new SqrtHelper(this.a.squared() * this.b.b);
         const b = new SqrtHelper(this.b.squared() * this.b.b);
-        this.a.a = a.a;
+        this.a.a = Math.sign(this.a.a) * a.a;
         this.a.b = a.b;
-        this.b.a = b.a;
+        this.b.a = Math.sign(this.b.a) * b.a;
         this.b.b = b.b;
         return this.simplify();
     }
@@ -173,7 +178,13 @@ class SqrtFracHelper {
         return this.a.a == x.a.a && this.a.b == x.a.b && this.b.a == x.b.a && this.b.b == x.b.b
     }
 }
-SqrtFracHelper.prototype.toString = function () {
+SqrtFracHelper.prototype.toString = function (verbose = false) {
+    if (verbose) {
+        console.log(this.a)
+        console.log(this.a + "")
+        console.log(this.b)
+        console.log(this.b + "")
+    }
     const a = this.a + "",
         b = this.b + "";
     if (b == "1") {
@@ -184,6 +195,7 @@ SqrtFracHelper.prototype.toString = function () {
 }
 
 function myDist(a, b, scaleL, scaleW, scaleH) {
+    // console.log(a, b, scaleL, scaleW, scaleH)
     let x = a.x - b.x,
         y = a.y - b.y,
         z = a.z - b.z;

@@ -226,13 +226,10 @@
                 paragraphs
             ), sceneManager);
         } else if (type == 3) {
-            // console.log("asdf");
-            // console.log(triangleLines[2]);
             let temp = [new SqrtFracHelper(
                 new SqrtHelper(triangleLines[2].a.a, triangleLines[2].a.b),
                 new SqrtHelper(triangleLines[2].b.a * 2, triangleLines[2].b.b)
             )];
-            // console.log(triangleLines[2]);
             temp.push(triangleLines[0].squared());
             temp.push(temp[0].squared());
             temp.push(new SqrtFracHelper(

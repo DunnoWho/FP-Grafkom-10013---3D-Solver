@@ -116,11 +116,7 @@
             }
         }
         if (Math.floor(sum) != sum) {
-            console.log(sum);
-            console.log(new SqrtHelper(sum * 16));
-            console.log(new SqrtHelper(16));
             sum = new SqrtFracHelper(new SqrtHelper(sum * 16), new SqrtHelper(16));
-            console.log(sum);
         } else {
             sum = new SqrtHelper(sum);
         }

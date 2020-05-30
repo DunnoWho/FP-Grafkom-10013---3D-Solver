@@ -13,8 +13,6 @@
 		lines = null,
 		planes = null;
 	[points, lines, planes] = generateElements(shape, drawL, drawW, drawH);
-	console.log(in1);
-	console.log(in2);
 	if (!validCheck(in1, 2, lines) || !validCheck(in2, 2, lines)) {
 		window.location.replace("error.php?code=0");
 	}
@@ -60,7 +58,7 @@
 		} else {
 			for (let i = 0; i < lines.length && helperLine[0] == null; i++) {
 				const e = lines[i];
-				const f = new THREE.Vector3().subVectors(lines[i]["points"][0], lines[i]["points"][0]).normalize();
+				const f = new THREE.Vector3().subVectors(lines[i]["points"][0], lines[i]["points"][1]).normalize();
 				if ((e["name"][0] == in2[0] || e["name"][0] == in2[1] || e["name"][1] == in2[0] || e["name"][1] == in2[1]) && (a.equals(f) || a.equals(f.negate()))) {
 					type = 3;
 					helperLine[1] = strToPoints(e["name"], shape, drawL, drawW, drawH);
@@ -77,15 +75,15 @@
 			}
 			if (helperLine[0] == null) {
 				const temp = [null, null]
-				for (let i = 0; i < lines.length && helperLine[0] == null; i++) {
+				for (let i = 0; i < lines.length && (temp[0] == null || temp[1] == null); i++) {
 					const e = lines[i];
 					const c = new THREE.Vector3().subVectors(e["points"][0], e["points"][1]).normalize();
 					if (a.equals(c) || a.equals(c.negate())) {
 						temp[0] = e;
-					} else if (b.equals(d) || b.equals(d.negate())) {
+					} else if (b.equals(c) || b.equals(c.negate())) {
 						temp[1] = e;
 					}
-					for (let j = i + 1; j < lines.length && (temp[0] == null ^ temp[1] == null); j++) {
+					for (let j = 0; j < lines.length && (temp[0] == null ^ temp[1] == null); j++) {
 						const ee = lines[j];
 						if (e["name"][0] == ee["name"][0] || e["name"][0] == ee["name"][1] || e["name"][1] == ee["name"][0] || e["name"][1] == ee["name"][1]) {
 							const d = new THREE.Vector3().subVectors(ee["points"][0], ee["points"][1]).normalize();
@@ -95,6 +93,10 @@
 								temp[1] = ee;
 							}
 						}
+					}
+					if (temp[0] == null ^ temp[1] == null) {
+						temp[0] = null;
+						temp[1] = null;
 					}
 				}
 				if (temp[0] != null && temp[1] != null) {
@@ -143,11 +145,11 @@
 			trigPoints.push(in2[1]);
 		}
 		if (type == 3) {
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"][0]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"]));
 			meshes.push(new MyLabel(helperLine[1][0]["label"]));
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"][1]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][1]["point"]));
 			meshes.push(new MyLabel(helperLine[1][1]["label"]));
-			meshes.push(new MyLine(helper1LineMaterial, helperLine[1][0]["point"]));
+			meshes.push(new MyLine(helper1LineMaterial, [helperLine[1][0]["point"], helperLine[1][1]["point"]]));
 			trigPoints.push(in2[0]);
 			trigPoints.push(in2[1]);
 			trigPoints.push(helperLine[1][0]["label"]["text"]);
@@ -162,17 +164,17 @@
 				]
 			), sceneManager, meshes.slice());
 		} else if (type == 4) {
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"][0]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"]));
 			meshes.push(new MyLabel(helperLine[1][0]["label"]));
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][0]["point"][1]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[1][1]["point"]));
 			meshes.push(new MyLabel(helperLine[1][1]["label"]));
-			meshes.push(new MyLine(helper1LineMaterial, helperLine[1][0]["point"]));
+			meshes.push(new MyLine(helper1LineMaterial, [helperLine[1][0]["point"], helperLine[1][1]["point"]]));
 
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[2][0]["point"][0]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[2][0]["point"]));
 			meshes.push(new MyLabel(helperLine[2][0]["label"]));
-			meshes.push(new MyPoint(helper1PointMaterial, helperLine[2][0]["point"][1]));
+			meshes.push(new MyPoint(helper1PointMaterial, helperLine[2][1]["point"]));
 			meshes.push(new MyLabel(helperLine[2][1]["label"]));
-			meshes.push(new MyLine(helper1LineMaterial, helperLine[2][0]["point"]));
+			meshes.push(new MyLine(helper1LineMaterial, [helperLine[2][0]["point"], helperLine[2][1]["point"]]));
 
 			trigPoints.push(helperLine[1][0]["label"]["text"]);
 			trigPoints.push(helperLine[1][1]["label"]["text"]);
@@ -195,7 +197,7 @@
 			name: trigPoints[0] + trigPoints[2] + trigPoints[4]
 		};
 		trigPoints["points"] = strToPoints(trigPoints["name"], shape, drawL, drawW, drawH);
-		for (let i = 0; i < trigPoints["name"].length && trigPoints.length > 2; i++) {
+		for (let i = 0; i < trigPoints["name"].length && trigPoints["points"].length > 2; i++) {
 			if (trigPoints["name"][i] != helperLine[0][0]["label"]["text"] && trigPoints["name"][i] != helperLine[0][1]["label"]["text"]) {
 				trigPoints["mainPoint"] = trigPoints["points"][i];
 				trigPoints["points"].splice(i, 1);
@@ -204,11 +206,11 @@
 
 		meshes.length = 0;
 
-		meshes.push(new MyPoint(helper1PointMaterial, helperLine[0][0]["point"][0]));
+		meshes.push(new MyPoint(helper2PointMaterial, helperLine[0][0]["point"]));
 		meshes.push(new MyLabel(helperLine[0][0]["label"]));
-		meshes.push(new MyPoint(helper1PointMaterial, helperLine[0][0]["point"][1]));
+		meshes.push(new MyPoint(helper2PointMaterial, helperLine[0][1]["point"]));
 		meshes.push(new MyLabel(helperLine[0][1]["label"]));
-		meshes.push(new MyLine(helper1LineMaterial, helperLine[0][0]["point"]));
+		meshes.push(new MyLine(helper2LineMaterial, [helperLine[0][0]["point"], helperLine[0][1]["point"]]));
 
 		addSolutionStep(content, makePageContent(
 			"panel_content",
@@ -221,9 +223,9 @@
 		), sceneManager, meshes.slice());
 
 		const triangleSides = [
-			myDist(trigPoints["mainPoint"]["point"], trigPoints["points"][0]["point"]),
-			myDist(trigPoints["mainPoint"]["point"], trigPoints["points"][1]["point"]),
-			myDist(trigPoints["points"][0]["point"], trigPoints["points"][1]["point"])
+			myDist(trigPoints["mainPoint"]["point"], trigPoints["points"][0]["point"], drawL, drawW, drawH),
+			myDist(trigPoints["mainPoint"]["point"], trigPoints["points"][1]["point"], drawL, drawW, drawH),
+			myDist(trigPoints["points"][0]["point"], trigPoints["points"][1]["point"], drawL, drawW, drawH)
 		]
 		type = 0;
 
@@ -308,6 +310,14 @@
 				paragraphs
 			), sceneManager);
 		} else if (type == 0) {
+			addSolutionStep(content, makePageContent(
+				"panel_content",
+				"fa-pencil-square-o",
+				`Cara Pengerjaan`,
+				"",
+				paragraphs.slice()
+			), sceneManager);
+
 			let temp = [new SqrtFracHelper(
 				new SqrtHelper(
 					2 * triangleSides[0].a.a * triangleSides[1].a.a,
@@ -332,13 +342,13 @@
 					temp[4].b * temp[0].a.a, temp[0].a.b
 				),
 			));
-			const paragraphs = [
-				`Gunakan aturan cosinus untuk menentukan nilai cosinus \\( \\angle${trigPoints["mainPoint"]["label"]["text"]} \\):`,
+			paragraphs.length = 0;
+			paragraphs.push(
+				`Gunakan aturan cosinus untuk menentukan nilai cosinus \\( \\angle ${trigPoints["mainPoint"]["label"]["text"]} \\):`,
 				`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{(${lineNames[0]})^2 + (${lineNames[1]})^2 - (${lineNames[2]})^2}{2(${lineNames[0]})(${lineNames[1]})} \\)`,
 				`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{(${triangleSides[0]})^2 + (${triangleSides[1]})^2 - (${triangleSides[2]})^2}{2(${triangleSides[0]})(${triangleSides[1]})} \\)`,
 				`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${triangleSides[0].squared()} + ${triangleSides[1].squared()} - ${triangleSides[2].squared()}}{${temp[0]}} \\)`,
-				`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${triangleSides[0].squared()} + ${triangleSides[1].squared()} - ${triangleSides[2].squared()}}{${temp[0]}} \\)`,
-			]
+			);
 			if (`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${temp[4]}}{${temp[0]}} \\)` != `\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = ${temp[5]} \\)`) {
 				paragraphs.push(`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${temp[4]}}{${temp[0]}} \\)`);
 			}
@@ -367,18 +377,25 @@
 			), sceneManager);
 
 			temp = [
-				temp[5].a, temp[5].b,
-				temp[5].a.squared(), temp[5].b.squared(),
-				new SqrtHelper(temp[5].b.squared() - temp[5].a.squared())
+				new SqrtHelper(temp[5].a.a, temp[5].a.b),
+				new SqrtHelper(temp[5].b.a, temp[5].b.b)
 			]
 			temp.push(
+				temp[0].squared(),
+				temp[1].squared(),
+				new SqrtHelper(temp[1].squared() - temp[0].squared())
+			)
+			temp.push(
 				new SqrtFracHelper(
-					temp[4], temp[1]
+					new SqrtHelper(temp[4].a, temp[4].b),
+					new SqrtHelper(temp[1].a, temp[1].b)
 				),
 				new SqrtFracHelper(
-					temp[4], temp[0]
+					new SqrtHelper(temp[4].a, temp[4].b),
+					new SqrtHelper(temp[0].a, temp[0].b)
 				)
 			)
+
 			paragraphs.length = 0;
 			paragraphs.push(
 				`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{x}{r}\\)`,
@@ -410,7 +427,7 @@
 			}
 			paragraphs.push(
 				`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = ${temp[6]} \\)`,
-				`\\( \\angle${trigPoints["mainPoint"]["label"]["text"]} = ${myRound(Math.atan2(temp[4].a * Math.sqrt(temp[4].b), temp[0].a * Math.sqrt(temp[0].b)))}^\\circ \\)`
+				`\\( \\angle ${trigPoints["mainPoint"]["label"]["text"]} = ${myRound(Math.atan2(temp[4].a * Math.sqrt(temp[4].b), temp[0].a * Math.sqrt(temp[0].b)) * 180 / Math.PI)}^\\circ \\)`
 			);
 
 			addSolutionStep(content, makePageContent(
@@ -423,17 +440,31 @@
 		} else {
 			let sa = null,
 				de = null,
-				mi = null;
+				mi = null,
+				temp = null;
 
 			if (type == 3) {
-				de = 2;
-				sa = 0;
-				mi = 1;
-			} else {
-				de = 1;
+				de = 0;
 				sa = 2;
+				mi = 1;
+				temp = trigPoints["points"][0]["label"]["text"];
+			} else {
+				de = 2;
+				sa = 1;
 				mi = 0;
+				temp = trigPoints["points"][1]["label"]["text"];
 			}
+
+			paragraphs.push(
+				`Segitiga ${trigPoints["name"]} adalah segitiga siku-siku dengan sudut siku-siku di ${temp}`
+			);
+			addSolutionStep(content, makePageContent(
+				"panel_content",
+				"fa-pencil-square-o",
+				`Cara Pengerjaan`,
+				"",
+				paragraphs
+			), sceneManager);
 
 			addSolutionStep(content, makePageContent(
 				"panel_content",
@@ -446,12 +477,12 @@
 					`\\( \\sin(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${lineNames[de]}}{${lineNames[mi]}} \\)`,
 					`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{samping}{miring}\\)`,
 					`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${lineNames[sa]}}{${lineNames[mi]}} \\)`,
-					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{depan}{samping}\\)`
+					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{depan}{samping}\\)`,
 					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${lineNames[de]}}{${lineNames[sa]}} \\)`
 				]
 			), sceneManager);
 
-			let temp = [
+			temp = [
 				new SqrtFracHelper(
 					new SqrtHelper(
 						triangleSides[de].a.a * triangleSides[mi].b.a,
@@ -483,7 +514,7 @@
 					),
 				)
 			]
-			temp.push(Math.atan2(temp[2].a.a * Math.sqrt(temp[2].a.b), temp[2].b.a * Math.sqrt(temp[2].b.b)))
+			temp.push(Math.atan2(temp[2].a.a * Math.sqrt(temp[2].a.b), temp[2].b.a * Math.sqrt(temp[2].b.b)) * 180 / Math.PI)
 			addSolutionStep(content, makePageContent(
 				"panel_content",
 				"fa-pencil-square-o",
@@ -495,8 +526,8 @@
 					`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${triangleSides[sa]}}{${triangleSides[mi]}} \\)`,
 					`\\( \\cos(${trigPoints["mainPoint"]["label"]["text"]}) = ${temp[1]}\\)`,
 					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = \\frac{${triangleSides[de]}}{${triangleSides[sa]}} \\)`,
-					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = ${temp[2]}\\)`
-					`\\( \\angle${trigPoints["mainPoint"]["label"]["text"]} = ${myRound(temp[3])}^\\circ \\)`
+					`\\( \\tan(${trigPoints["mainPoint"]["label"]["text"]}) = ${temp[2]}\\)`,
+					`\\( \\angle ${trigPoints["mainPoint"]["label"]["text"]} = ${myRound(temp[3])}^\\circ \\)`
 				]
 			), sceneManager);
 		}
