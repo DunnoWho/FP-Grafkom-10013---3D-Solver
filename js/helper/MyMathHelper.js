@@ -33,6 +33,12 @@ class SqrtHelper {
         this.a *= temp;
         return this;
     }
+
+    equals(x) {
+        this.simplify();
+        x.simplify();
+        return this.a == x.a && this.b == x.b;
+    }
 }
 SqrtHelper.prototype.toString = function () {
     if (this.a == 0 || this.b == 0) {
@@ -94,6 +100,12 @@ class FracHelper {
         // console.log("====");
         return this;
     }
+
+    equals(x) {
+        this.simplify();
+        x.simplify();
+        return this.a == x.a && this.b == x.b;
+    }
 }
 FracHelper.prototype.toString = function () {
     if (this.b == 1) {
@@ -153,6 +165,12 @@ class SqrtFracHelper {
         // console.log(a);
         // console.log(b);
         return this;
+    }
+
+    equals(x) {
+        this.rationalize();
+        x.rationalize();
+        return this.a.a == x.a.a && this.a.b == x.a.b && this.b.a == x.b.a && this.b.b == x.b.b
     }
 }
 SqrtFracHelper.prototype.toString = function () {

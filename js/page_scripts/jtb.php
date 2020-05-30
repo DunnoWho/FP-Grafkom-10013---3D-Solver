@@ -65,7 +65,8 @@
         `Cara Pengerjaan`,
         "",
         [
-            `Gambar bidang yang memuat titik ${in1} dan tegak lurus terhadap bidang ${in2}. Anda dapat mengubah arah kamera untuk melihat bahwa kedua bidang membentuk sudut 90 derajat. Arahkan kamera hingga kedua bidang tampak seperti 2 garis. Akan terlihat bahwa kedua garis tersebut tegak lurus.`
+            `Gambar bidang yang memuat titik ${in1} dan tegak lurus terhadap bidang ${in2}. Anda dapat mengubah arah kamera untuk melihat bahwa kedua bidang membentuk sudut 90 derajat. Arahkan kamera hingga kedua bidang tampak seperti 2 garis. Akan terlihat bahwa kedua garis tersebut tegak lurus.`,
+            `Cara lain untuk menentukan bidang yang tegak lurus biasanya adalah dengan menggambar garis yang tegak lurus dengan garis ${in2[0]}${in2[1]}${in2.length > 3 ? " dan garis " + in2[2] + in2[3] : ""}. Lalu dari garis itu digambar sebuah bidang.`
         ]
     ), sceneManager, initMeshes.slice());
 

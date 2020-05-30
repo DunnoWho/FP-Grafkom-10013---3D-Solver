@@ -12,7 +12,7 @@
     let points = null,
         lines = null,
         planes = null;
-    [points, lines, planes] = generateElements(shape, l, w, h);
+    [points, lines, planes] = generateElements(shape, drawL, drawW, drawH);
     if (!validCheck(in1, 1, points) || !validCheck(in2, 2, lines)) {
         window.location.replace("error.php?code=0");
     }
