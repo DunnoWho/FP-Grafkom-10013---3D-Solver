@@ -12,6 +12,8 @@
         makePageContent("panel_content", "fa-list-alt", "List contoh soal sudut", "", [
             "Sudut antara 2 garis",
             "<ul><li><a target='_blank' href='/sgg.php?in1=AS&in2=CS&shape=0&l=1&w=1&h=1'>Kubus 1</a></li><li><a target='_blank' href='/sgg.php?in1=AF&in2=CH&shape=0&l=1&w=1&h=1'>Kubus 2</a></li><li><a target='_blank' href='/sgg.php?in1=AF&in2=GD&shape=0&l=1&w=1&h=1'>Kubus 3</a></li><li><a target='_blank' href='/sgg.php?in1=TJ&in2=AH&shape=0&l=1&w=1&h=1'>Kubus 4</a></li><li><a target='_blank' href='/sgg.php?in1=AH&in2=AG&shape=0&l=1&w=1&h=1'>Kubus 5</a></li><li><a target='_blank' href='/sgg.php?in1=AR&in2=FT&shape=0&l=6&w=12&h=6'>Balok</a></li><li><a target='_blank' href='/sgg.php?in1=BC&in2=DJ&shape=1&l=8&w=8&h=6'>Limas segiempat</a></li></ul>",
+            "Sudut antara garis dan bidang",
+            "<ul><li><a target='_blank' href='/sgb.php?in1=EA&in2=BDG&shape=0&l=1&w=1&h=1'>Kubus</a></li><li><a target='_blank' href='/sgb.php?in1=EM&in2=GNP&shape=0&l=6&w=6&h=12'>Balok</a></li><li><a target='_blank' href='/sgb.php?in1=FH&in2=BCT&shape=1&l=8&w=8&h=6'>Limas segiempat</a></li></ul>",
         ]),
         makePageContent("form", "fa-pencil-ruler", "Form input soal", "", []),
     ]);

@@ -444,8 +444,8 @@
 				temp = null;
 
 			if (type == 3) {
-				de = 0;
-				sa = 2;
+				de = 2;
+				sa = 0;
 				mi = 1;
 				temp = trigPoints["points"][0]["label"]["text"];
 			} else {

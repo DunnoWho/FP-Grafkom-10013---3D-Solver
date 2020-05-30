@@ -42,8 +42,9 @@
         new THREE.Vector3(b[2].x, b[2].y, b[2].z)
     ).normalize();
     let helperPlane = null;
+    let tempPoint = new THREE.Vector3(t["x"], t["y"], t["z"]);
     for (let i = 0; i < planes.length && helperPlane == null; i++) {
-        if (planes[i].plane.normal.dot(probPlane.normal) == 0) {
+        if (planes[i].plane.normal.dot(probPlane.normal) == 0 && planes[i].plane.projectPoint(tempPoint).equals(tempPoint)) {
             helperPlane = planes[i];
         }
     }
